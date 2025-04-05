@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PiMotMot 💛 Minions Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Luckiest Guy', cursive;
+      color: #fff;
+      text-align: center;   
+      min-height: 100vh;
+      background-size: cover;
+      background-position: center;
+      animation: bgCycle 20s infinite ease-in-out;
+    }
+
+    @keyframes bgCycle {
+      0%, 100% { background-image: url('images/minions1.jpg'); }
+      20% { background-image: url('images/minions2.jpg'); }
+      40% { background-image: url('images/minions3.jpg'); }
+      60% { background-image: url('images/minions4.jpg'); }
+      80% { background-image: url('images/minions5.jpg'); }
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-top: 1rem;
+      color: #ffeb3b;
+      text-shadow: 2px 2px #000;
+    }
+
+    .quiz-box {
+      background: rgba(0, 0, 0, 0.7);
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 20px;
+      max-width: 600px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .question {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .options button {
+      background-color: #fdd835;
+      color: #000;
+      padding: 0.75rem 1.5rem;
+      font-size: 1.1rem;
+      margin: 0.5rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .options button:hover {
+      background-color: #fbc02d;
+    }
+
+    .result {
+      font-size: 2rem;
+      color: #ffeb3b;
+      margin-top: 2rem;
+      text-shadow: 2px 2px #000;
+    }
+
+    .monthsary-msg {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+      color: #ffffff;
+      text-shadow: 1px 1px #000;
+      animation: fadeIn 2s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .domain-name {
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      font-size: 1rem;
+      color: #ffeb3b;
+      background: rgba(0,0,0,0.4);
+      padding: 0.5rem;
+      text-shadow: 1px 1px #000;
+    }
+  </style>
+</head>
+<body>
+
+  <audio autoplay loop>
+    <source src="music/bgmusic.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <h1>💛  Mga di ko maintindihan sayo, pero lab kita  💙</h1>
+
+  <div class="quiz-box" id="quiz">
+    <div class="question" id="question">Loading question...</div>
+    <div class="options" id="options"></div>
+  </div>
+
+  <div class="result" id="result"></div>
+
+  <div class="domain-name">PiMotMot 💛</div>
+
+  <script>
+    const quizData = [
+      {
+        question: "Pang ilang month nato?",
+        options: ["65", "66", "67", "68"],
+        answer: "67"
+      },
+      {
+        question: "Bat ka laging galet?",
+        options: ["Trip ko lng", "Secret", "Ambored", "puro ka laro"],
+        answer: "any"
+      },
+      {
+        question: "What's my favorite food sa Kuroda?",
+        options: ["Tempura", "Katsu", "Kuro Ramen", "Sushi"],
+        answer: "Kuro Ramen"
+      },
+      {
+        question: "My peborit color?",
+        options: ["Red", "Pink", "Blue", "Black"],
+        answer: "Blue"
+      },
+      {
+        question: "What u think i like about you?",
+        options: ["Eyes", "Lips", "Smile", "everything"],
+        answer: "everything"
+      },
+      {
+        question: "Ano Malaki sayo?",
+        options: ["Forehead", "Puso", "Ehem", "Pepet"],
+        answer: "Forehead"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const resultEl = document.getElementById('result');
+
+    function loadQuestion() {
+      const current = quizData[currentQuestion];
+      questionEl.textContent = current.question;
+      optionsEl.innerHTML = "";
+
+      current.options.forEach(option => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.onclick = () => checkAnswer(option);
+        optionsEl.appendChild(button);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const correct = quizData[currentQuestion].answer;
+      if (correct === "any" || selected === correct) {
+        score++;
+      }
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById('quiz').style.display = 'none';
+      resultEl.innerHTML = `
+        🥳 You scored ${score}/${quizData.length} <br><br>
+        <div class="monthsary-msg">
+          Happy 67th Monthsary, BB! 💖<br>
+          Sana bati na tayo kung ano man kingagagalet mo 💛<br>
+          lab na lab ka ni baba 😘
+        </div>
+      `;
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
